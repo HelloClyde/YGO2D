@@ -5,13 +5,12 @@ using LitJson;
 
 public class HandContentFit : MonoBehaviour {
     private GridLayoutGroup gridLayoutGroup;
-    private GameObject extraCardObj;
+    public GameObject desSizeObj;
 
     // Use this for initialization
     void Start ()
     {
         this.gridLayoutGroup = this.gameObject.GetComponent<GridLayoutGroup>();
-        this.extraCardObj = GameObject.Find("MMagicPanel/Extra");
     }
 	
 	// Update is called once per frame
@@ -24,7 +23,7 @@ public class HandContentFit : MonoBehaviour {
 
         // 设置卡片宽高一致
         // 获取桌面标准宽高
-        Rect extraCardRect = extraCardObj.GetComponent<RectTransform>().rect;
+        Rect extraCardRect = desSizeObj.GetComponent<RectTransform>().rect;
         // Debug.Log("w:" + extraCardRect.width + ",h:" + extraCardRect.height);
         this.gridLayoutGroup.cellSize = new Vector2(extraCardRect.width, extraCardRect.height);
     }

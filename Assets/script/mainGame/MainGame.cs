@@ -26,6 +26,7 @@ public class MainGame : MonoBehaviour {
         if (DateTime.Now.Ticks > this.oldTick + MainGame.tickDelta)
         {
             GetServiceGameLog();
+            this.oldTick = DateTime.Now.Ticks;
         }
     }
     
@@ -38,42 +39,74 @@ public class MainGame : MonoBehaviour {
         JsonData responseResult = JsonMapper.ToObject(response);
         if ((int)responseResult["code"] == 0)
         {
+            // 非空表示有新消息
             if (responseResult["data"] != null)
             {
-                //responseResult.data.
                 Debug.Log(JsonMapper.ToJson(responseResult));
-                if ((string)responseResult["data"]["action"] == "DrawCard")
+                string action = (string)responseResult["data"]["action"];
+                switch (action)
                 {
-                    GameObject handContent;
-                    string imagePath;
-                    string cardId = (string)responseResult["data"]["paramsMap"]["CardId"];
-                    GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
-                    GameObject cardObject = Instantiate(cardPrefab);
-                    cardObject.name = "card" + cardId;
-                    cardObject.GetComponent<ShowCardInfo>().cardId = int.Parse(cardId);
-                    cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
-                    cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
-                    cardObject.AddComponent<CardMenuScript>();
-                    // 判断是敌方还是我方
-                    if ((string)responseResult["data"]["email"] == UserInfo.email)
-                    {
-                        handContent = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
-                        imagePath = "image/CardImage/" + cardId;
-                    }
-                    else
-                    {
-                        handContent = GameObject.Find("EHandPanel/Scroll View/Viewport/Content");
-                        imagePath = "image/CardBack";
-                    }
-                    cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>(imagePath);
-                    cardObject.transform.SetParent(handContent.transform);
+                    case "DrawCard":
+                        DoDrawCard(responseResult);
+                        break;
+                    case "CallMonsterFromHand":
+                        DoCallMonsterFromHand(responseResult);
+                        break;
                 }
             }
-            this.oldTick = DateTime.Now.Ticks;
         }
         else
         {
-            Debug.Log("连接错误");
+            Debug.Log((string)responseResult["data"]);
+        }
+    }
+
+    public void DoDrawCard(JsonData responseResult)
+    {
+        GameObject handContent;
+        string imagePath;
+        string cardId = (string)responseResult["data"]["paramsMap"]["CardId"];
+        GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
+        GameObject cardObject = Instantiate(cardPrefab);
+        cardObject.name = "card" + cardId;
+        cardObject.GetComponent<ShowCardInfo>().cardId = int.Parse(cardId);
+        cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
+        cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
+        cardObject.AddComponent<CardMenuScript>();
+        // 判断是敌方还是我方
+        if ((string)responseResult["data"]["email"] == UserInfo.email)
+        {
+            handContent = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
+            imagePath = "image/CardImage/" + cardId;
+        }
+        else
+        {
+            handContent = GameObject.Find("EHandPanel/Scroll View/Viewport/Content");
+            imagePath = "image/CardBack";
+        }
+        cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>(imagePath);
+        cardObject.transform.SetParent(handContent.transform);
+    }
+
+    public void DoCallMonsterFromHand(JsonData responseResult)
+    {
+        // 判断是敌方还是我方
+        if ((string)responseResult["data"]["email"] == UserInfo.email)
+        {
+            int handCardIdx = int.Parse((string)responseResult["data"]["paramsMap"]["HandCardIdx"]);
+            int monsterStatus = int.Parse((string)responseResult["data"]["paramsMap"]["MonsterStatus"]);
+            int cardId = int.Parse((string)responseResult["data"]["paramsMap"]["CardId"]);
+            // 删除那张手牌
+            GameObject MHandContentObj = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
+            GameObject desHandCardObj = MHandContentObj.transform.GetChild(handCardIdx).gameObject;
+            Destroy(desHandCardObj);
+            // 场上生成怪兽
+
+
+        }
+        else
+        {
+
         }
     }
 }

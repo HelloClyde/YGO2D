@@ -21,7 +21,7 @@ public class CardMenuScript : MonoBehaviour {
                 GameObject menuPanelObj = GameObject.Find("Canvas").GetComponent<MainGame>().menuPanelObj;
                 menuPanelObj.SetActive(true);
                 // 设置菜单大小
-                float menuWidth = GameObject.Find("MMagicPanel/Extra").GetComponent<RectTransform>().rect.width;
+                float menuWidth = GameObject.Find("CardPanel/EnemyPanel/FeatureDeck1/MainDeck/Deck").GetComponent<RectTransform>().rect.width;
                 // menuPanelObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors()
                 menuPanelObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, menuWidth);
                 menuPanelObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(menuWidth, menuWidth / 160 * 50);
@@ -29,7 +29,7 @@ public class CardMenuScript : MonoBehaviour {
                     this.gameObject.transform.position.x + this.gameObject.GetComponent<RectTransform>().rect.width,
                     this.gameObject.transform.position.y + this.gameObject.GetComponent<RectTransform>().rect.height);
                 // 设置菜单需要操作的目标卡片
-                menuPanelObj.GetComponent<MenuAction>().operateCardId = this.gameObject.GetComponent<ShowCardInfo>().cardId;
+                menuPanelObj.GetComponent<MenuAction>().operateCardObj = this.gameObject;
             }
         }
     }
