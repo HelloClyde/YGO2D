@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Assets.script.utils;
 
 public class CardMenuScript : MonoBehaviour {
 
@@ -13,7 +14,7 @@ public class CardMenuScript : MonoBehaviour {
 	void Update () {
         if (Input.GetMouseButtonDown(1))
         {
-            if (isInGUI(Input.mousePosition, this.gameObject))
+            if (GUIOp.isInGUI(Input.mousePosition, this.gameObject))
             {
                 Debug.Log(this.gameObject.name);
                 // 移动菜单到卡牌边
@@ -27,19 +28,10 @@ public class CardMenuScript : MonoBehaviour {
                 menuPanelObj.transform.position = new Vector3(
                     this.gameObject.transform.position.x + this.gameObject.GetComponent<RectTransform>().rect.width,
                     this.gameObject.transform.position.y + this.gameObject.GetComponent<RectTransform>().rect.height);
+                // 设置菜单需要操作的目标卡片
+                menuPanelObj.GetComponent<MenuAction>().operateCardId = this.gameObject.GetComponent<ShowCardInfo>().cardId;
             }
         }
     }
 
-    private bool isInGUI(Vector3 mousePostion, GameObject guiObj)
-    {
-        float halfWidth = guiObj.GetComponent<RectTransform>().rect.width / 2;
-        float halfHeight = guiObj.GetComponent<RectTransform>().rect.height / 2;
-        if (mousePostion.x >= guiObj.transform.position.x - halfWidth && mousePostion.x <= guiObj.transform.position.x + halfWidth &&
-            mousePostion.y >= guiObj.transform.position.y - halfHeight && mousePostion.y <= guiObj.transform.position.y + halfHeight)
-        {
-            return true;
-        }
-        return false;
-    }
 }

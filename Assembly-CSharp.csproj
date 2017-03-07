@@ -56,8 +56,10 @@
      <Compile Include="Assets\script\mainGame\CardMenuScript.cs" />
      <Compile Include="Assets\script\mainGame\HandContentFit.cs" />
      <Compile Include="Assets\script\mainGame\MainGame.cs" />
+     <Compile Include="Assets\script\mainGame\MenuAction.cs" />
      <Compile Include="Assets\script\menu\Login.cs" />
      <Compile Include="Assets\script\menu\MainMenuUIBehaviourScript.cs" />
+     <Compile Include="Assets\script\utils\GUIOp.cs" />
      <Compile Include="Assets\script\utils\HttpClient.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/ProgrammingTools/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
