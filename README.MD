@@ -1,4 +1,4 @@
 # YGO2D
 
-##说明
-/Assets/Resources/image/CardImage 传不了github
+## detail
+/Assets/Resources/image/CardImage can't upload to github because of limit of github
