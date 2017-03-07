@@ -3,3 +3,9 @@
 ################################################################################
 
 /.vs/YGO2D/v14
+/dist
+/Library
+/obj/Debug
+/ProjectSettings
+/Temp
+/Assets/Resources
