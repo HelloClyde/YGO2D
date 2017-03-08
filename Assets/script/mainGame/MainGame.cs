@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Assets.script.common;
 using LitJson;
 using UnityEngine.UI;
+using Assets.script.utils;
 
 public class MainGame : MonoBehaviour {
     private long oldTick;
@@ -21,8 +22,13 @@ public class MainGame : MonoBehaviour {
         GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
         GameObject myCardObj = Instantiate(cardPrefab);
         GameObject enemyCardObj = Instantiate(cardPrefab);
+        // 获取目标位置
         GameObject myDeckObj = GameObject.Find("MyPanel/FeatureDeck1/MainDeck");
         GameObject enemyDeckObj = GameObject.Find("EnemyPanel/FeatureDeck1/MainDeck");
+        // 删除牌组中ShowCardInfo组件
+        Destroy(myCardObj.GetComponent<ShowCardInfo>());
+        Destroy(enemyCardObj.GetComponent<ShowCardInfo>());
+        // 放置在相应位置
         PutCard(myDeckObj, myCardObj);
         PutCard(enemyDeckObj, enemyCardObj);
     }
@@ -81,7 +87,7 @@ public class MainGame : MonoBehaviour {
         }
         else
         {
-            Debug.Log((string)responseResult["data"]);
+            GUIOp.showMsg((string)responseResult["data"]);
         }
     }
 

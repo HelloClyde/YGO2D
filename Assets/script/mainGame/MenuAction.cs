@@ -46,7 +46,7 @@ public class MenuAction : MonoBehaviour {
         JsonData responseResult = JsonMapper.ToObject(response);
         if ((int)responseResult["code"] != 0)
         {
-            Debug.Log((string)responseResult["data"]);
+            GUIOp.showMsg((string)responseResult["data"]);
         }
     }
 
