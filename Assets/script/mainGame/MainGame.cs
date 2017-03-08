@@ -95,22 +95,22 @@ public class MainGame : MonoBehaviour {
     {
         GameObject handContent;
         string imagePath;
-        string cardId = (string)responseResult["data"]["paramsMap"]["CardId"];
         GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
         GameObject cardObject = Instantiate(cardPrefab);
-        cardObject.name = "card" + cardId;
-        cardObject.GetComponent<ShowCardInfo>().cardId = int.Parse(cardId);
         cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
         cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
         cardObject.AddComponent<CardMenuScript>();
         // 判断是敌方还是我方
         if ((string)responseResult["data"]["email"] == UserInfo.email)
         {
+            string cardId = (string)responseResult["data"]["paramsMap"]["CardId"];
+            cardObject.GetComponent<ShowCardInfo>().cardId = int.Parse(cardId);
             handContent = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
             imagePath = "image/CardImage/" + cardId;
         }
         else
         {
+            cardObject.GetComponent<ShowCardInfo>().cardId = -1;
             handContent = GameObject.Find("EHandPanel/Scroll View/Viewport/Content");
             imagePath = "image/CardBack";
         }
@@ -122,39 +122,46 @@ public class MainGame : MonoBehaviour {
     {
         int handCardIdx = int.Parse((string)responseResult["data"]["paramsMap"]["HandCardIdx"]);
         int monsterStatus = int.Parse((string)responseResult["data"]["paramsMap"]["MonsterStatus"]);
-        int cardId = int.Parse((string)responseResult["data"]["paramsMap"]["CardId"]);
         int monsterCardIdx = int.Parse((string)responseResult["data"]["paramsMap"]["MonsterCardIdx"]);
-        GameObject HandContentObj = null;
-        string monsterContentPath = "";
+        GameObject HandContentObj;
+        string monsterContentPath;
+        // 场上生成怪兽
+        GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
+        GameObject cardObject = Instantiate(cardPrefab);
+        cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
+        cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
         // 判断是敌方还是我方
         if ((string)responseResult["data"]["email"] == UserInfo.email)
         {
+            int cardId = int.Parse((string)responseResult["data"]["paramsMap"]["CardId"]);
             HandContentObj = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
             monsterContentPath = "MyPanel/DuelDeck/Monster/Monster";
+            cardObject.GetComponent<ShowCardInfo>().cardId = cardId;
+            if (monsterStatus == 0)
+            {
+                cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardBack");
+            }else
+            {
+                cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
+            }
         }
         else
         {
             HandContentObj = GameObject.Find("EHandPanel/Scroll View/Viewport/Content");
             monsterContentPath = "EnemyPanel/DuelDeck/Monster/Monster";
+            cardObject.GetComponent<ShowCardInfo>().cardId = -1;
+            if (monsterStatus == 0)
+            {
+                cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardBack");
+            }else
+            {
+                int cardId = int.Parse((string)responseResult["data"]["paramsMap"]["CardId"]);
+                cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
+            }
         }
         // 删除那张手牌
         GameObject desHandCardObj = HandContentObj.transform.GetChild(handCardIdx).gameObject;
         Destroy(desHandCardObj);
-        // 场上生成怪兽
-        GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
-        GameObject cardObject = Instantiate(cardPrefab);
-        cardObject.name = "card" + cardId.ToString();
-        cardObject.GetComponent<ShowCardInfo>().cardId = cardId;
-        cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
-        cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
-        if (monsterStatus == 0)
-        {
-            cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardBack");
-        }
-        else
-        {
-            cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
-        }
         GameObject monsterContent = GameObject.Find(monsterContentPath + monsterCardIdx.ToString());
         PutCard(monsterContent, cardObject, monsterStatus);
     }

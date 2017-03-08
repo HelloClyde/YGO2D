@@ -8,7 +8,7 @@ using Assets.script.common;
 public class ShowCardInfo : MonoBehaviour {
     public GameObject cardInfoImageObj;
     public GameObject cardInfoTextObj;
-    public int cardId;
+    public int cardId = -1;
 
 
     // Use this for initialization
@@ -23,21 +23,28 @@ public class ShowCardInfo : MonoBehaviour {
 
     public void showCardInfo()
     {
-        Debug.Log("get cardInfo from server.cardId:" + this.cardId.ToString());
+        string imagePath;
+        string text;
         // 从服务器获取卡片信息
-        Dictionary<string, object> paramsMap = new Dictionary<string, object>();
-        paramsMap.Add("cardId", this.cardId);
-        string response = HttpClient.sendGet(App.serverPath + "YgoService/card-manager/card-info", paramsMap);
-        ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
+        if (this.cardId == -1)
+        {
+            imagePath = "image/CardBack";
+            text = "暂无信息";
+        }else
+        {
+            Dictionary<string, object> paramsMap = new Dictionary<string, object>();
+            paramsMap.Add("cardId", this.cardId);
+            string response = HttpClient.sendGet(App.serverPath + "YgoService/card-manager/card-info", paramsMap);
+            ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
+            imagePath = "image/CardImage/" + cardId.ToString();
+            text = responseResult.data.ToString();
+        }
         // 设置图片
-        // GameObject cardInfoImageObj = GameObject.Find("Canvas/CardInfoPanel/Image");
-        this.cardInfoImageObj.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
+        this.cardInfoImageObj.GetComponent<Image>().sprite = Resources.Load<Sprite>(imagePath);
         // 设置文字描述
-        // GameObject cardInfoTextObj = GameObject.Find("Canvas/CardInfoPanel/Scroll View/Viewport/Content/Text");
-        this.cardInfoTextObj.GetComponent<Text>().text = responseResult.data.ToString();//JsonUtility.ToJson(responseResult.data);
+        this.cardInfoTextObj.GetComponent<Text>().text = text;
         // 设置scroll view高度
         GameObject scrollViewContent = this.cardInfoTextObj.transform.parent.gameObject;
-        Debug.Log(cardInfoTextObj.GetComponent<RectTransform>().rect.height);
         scrollViewContent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,
             cardInfoTextObj.GetComponent<RectTransform>().rect.height);
     }
