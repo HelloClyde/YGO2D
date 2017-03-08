@@ -38,7 +38,7 @@ public class MainGame : MonoBehaviour {
         }
     }
 
-    void PutCard(GameObject contentObj, GameObject cardObj, int mode = 0)
+    void PutCard(GameObject contentObj, GameObject cardObj, int mode = 2)
     {
         cardObj.transform.SetParent(contentObj.transform);
         cardObj.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
@@ -48,7 +48,7 @@ public class MainGame : MonoBehaviour {
             contentObj.GetComponent<RectTransform>().rect.width);
         cardObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,
             contentObj.GetComponent<RectTransform>().rect.width / 230 * 160);
-        if (mode == 1)
+        if (mode == 0 || mode == 1)
         {
             cardObj.GetComponent<RectTransform>().Rotate(new Vector3(0,0,90));
         }
@@ -58,7 +58,7 @@ public class MainGame : MonoBehaviour {
     {
         Dictionary<string, object> paramsMap = new Dictionary<string, object>();
         paramsMap.Add("token", UserInfo.token);
-        string response = HttpClient.sendGet("http://localhost:8080/YgoService/duel-controller/get-inc-log",
+        string response = HttpClient.sendGet(App.serverPath + "YgoService/duel-controller/get-inc-log",
             paramsMap);
         JsonData responseResult = JsonMapper.ToObject(response);
         if ((int)responseResult["code"] == 0)
@@ -114,32 +114,36 @@ public class MainGame : MonoBehaviour {
 
     public void DoCallMonsterFromHand(JsonData responseResult)
     {
+        int handCardIdx = int.Parse((string)responseResult["data"]["paramsMap"]["HandCardIdx"]);
+        int monsterStatus = int.Parse((string)responseResult["data"]["paramsMap"]["MonsterStatus"]);
+        int cardId = int.Parse((string)responseResult["data"]["paramsMap"]["CardId"]);
+        int monsterCardIdx = int.Parse((string)responseResult["data"]["paramsMap"]["MonsterCardIdx"]);
+        GameObject HandContentObj = null;
+        string monsterContentPath = "";
         // 判断是敌方还是我方
         if ((string)responseResult["data"]["email"] == UserInfo.email)
         {
-            int handCardIdx = int.Parse((string)responseResult["data"]["paramsMap"]["HandCardIdx"]);
-            int monsterStatus = int.Parse((string)responseResult["data"]["paramsMap"]["MonsterStatus"]);
-            int cardId = int.Parse((string)responseResult["data"]["paramsMap"]["CardId"]);
-            int monsterCardIdx = int.Parse((string)responseResult["data"]["paramsMap"]["MonsterCardIdx"]);
-            // 删除那张手牌
-            GameObject MHandContentObj = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
-            GameObject desHandCardObj = MHandContentObj.transform.GetChild(handCardIdx).gameObject;
-            Destroy(desHandCardObj);
-            // 场上生成怪兽
-            GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
-            GameObject cardObject = Instantiate(cardPrefab);
-            cardObject.name = "card" + cardId.ToString();
-            cardObject.GetComponent<ShowCardInfo>().cardId = cardId;
-            cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
-            cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
-            cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
-            GameObject monsterContent = GameObject.Find("MyPanel/DuelDeck/Monster/Monster" + monsterCardIdx.ToString());
-            PutCard(monsterContent, cardObject);
+            HandContentObj = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
+            monsterContentPath = "MyPanel/DuelDeck/Monster/Monster";
         }
         else
         {
-
+            HandContentObj = GameObject.Find("EHandPanel/Scroll View/Viewport/Content");
+            monsterContentPath = "EnemyPanel/DuelDeck/Monster/Monster";
         }
+        // 删除那张手牌
+        GameObject desHandCardObj = HandContentObj.transform.GetChild(handCardIdx).gameObject;
+        Destroy(desHandCardObj);
+        // 场上生成怪兽
+        GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
+        GameObject cardObject = Instantiate(cardPrefab);
+        cardObject.name = "card" + cardId.ToString();
+        cardObject.GetComponent<ShowCardInfo>().cardId = cardId;
+        cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
+        cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
+        cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
+        GameObject monsterContent = GameObject.Find(monsterContentPath + monsterCardIdx.ToString());
+        PutCard(monsterContent, cardObject, monsterStatus);
     }
 }
 

@@ -17,7 +17,7 @@ public class HallScript : MonoBehaviour {
         GameObject scrollViewObj = GameObject.Find("Canvas/RoomsPanel/Scroll View");
         GameObject scrollViewContent = GameObject.Find("Canvas/RoomsPanel/Scroll View/Viewport/Content");
         // 从服务器获取初始化房间数据
-        string response = HttpClient.sendPost("http://localhost:8080/YgoService/hall/lists",
+        string response = HttpClient.sendPost(App.serverPath + "YgoService/hall/lists",
                 new System.Collections.Generic.Dictionary<string, System.Object>());
         ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
         rooms = new GameObject[responseResult.data.Count];
@@ -47,7 +47,7 @@ public class HallScript : MonoBehaviour {
         {
             // 更新数据
             Debug.Log("从服务器更新房间信息");
-            string response = HttpClient.sendPost("http://localhost:8080/YgoService/hall/lists", 
+            string response = HttpClient.sendPost(App.serverPath + "YgoService/hall/lists", 
                 new Dictionary<string, object>());
             ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
             for (int i = 0;i < responseResult.data.Count;i++)

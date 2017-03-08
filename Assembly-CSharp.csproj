@@ -49,6 +49,7 @@
      <Compile Include="Assets\script\cardManager\ScrollViewSize.cs" />
      <Compile Include="Assets\script\cardManager\ShowCardInfo.cs" />
      <Compile Include="Assets\script\common\UserInfo.cs" />
+     <Compile Include="Assets\script\common\app.cs" />
      <Compile Include="Assets\script\hall\HallScript.cs" />
      <Compile Include="Assets\script\hall\ReturnMainMenu.cs" />
      <Compile Include="Assets\script\hall\Room.cs" />

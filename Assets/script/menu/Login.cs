@@ -38,7 +38,7 @@ public class Login : MonoBehaviour {
         Dictionary<string, object> paramsMap = new Dictionary<string, object>();
         paramsMap.Add("email", this.emailInput.GetComponent<InputField>().text);
         paramsMap.Add("password", this.passwordInput.GetComponent<InputField>().text);
-        string response = HttpClient.sendPost("http://localhost:8080/YgoService/user-op/login", paramsMap);
+        string response = HttpClient.sendPost(App.serverPath + "YgoService/user-op/login", paramsMap);
         ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
         if (responseResult.code == 0)
         {

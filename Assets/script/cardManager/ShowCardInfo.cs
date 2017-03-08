@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using Assets.script.common;
 
 public class ShowCardInfo : MonoBehaviour {
     public GameObject cardInfoImageObj;
@@ -26,7 +27,7 @@ public class ShowCardInfo : MonoBehaviour {
         // 从服务器获取卡片信息
         Dictionary<string, object> paramsMap = new Dictionary<string, object>();
         paramsMap.Add("cardId", this.cardId);
-        string response = HttpClient.sendGet("http://localhost:8080/YgoService/card-manager/card-info", paramsMap);
+        string response = HttpClient.sendGet(App.serverPath + "YgoService/card-manager/card-info", paramsMap);
         ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
         // 设置图片
         // GameObject cardInfoImageObj = GameObject.Find("Canvas/CardInfoPanel/Image");

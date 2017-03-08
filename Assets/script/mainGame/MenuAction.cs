@@ -34,25 +34,31 @@ public class MenuAction : MonoBehaviour {
         this.gameObject.SetActive(false);
     }
 
-    public void CallAtkMonster()
+    private void CallMonster(int monsterStatus=2)
     {
         Dictionary<string, object> paramsMap = new Dictionary<string, object>();
         paramsMap.Add("token", UserInfo.token);
         paramsMap.Add("action", "CallMonsterFromHand");
         paramsMap.Add("HandCardIdx", this.operateCardObj.transform.GetSiblingIndex().ToString());
-        paramsMap.Add("MonsterStatus", "2");// 2表示攻击表示
-        string response = HttpClient.sendPost("http://localhost:8080/YgoService/duel-controller/action",
+        paramsMap.Add("MonsterStatus", monsterStatus.ToString());
+        string response = HttpClient.sendPost(App.serverPath + "YgoService/duel-controller/action",
             paramsMap);
         JsonData responseResult = JsonMapper.ToObject(response);
         if ((int)responseResult["code"] != 0)
         {
             Debug.Log((string)responseResult["data"]);
         }
+    }
+
+    public void CallAtkMonster()
+    {
+        CallMonster(2);// 2表示攻击表示
         closeMyself();
     }
 
     public void CallHideMonster()
     {
+        CallMonster(0);// 0表示里侧表示
         closeMyself();
     }
 

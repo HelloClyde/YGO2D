@@ -23,7 +23,7 @@ public class Room : MonoBehaviour {
             // 再按一次表示退出房间
             Dictionary<string, object> paramsMap = new Dictionary<string, object>();
             paramsMap.Add("token", UserInfo.token);
-            string response = HttpClient.sendGet("http://localhost:8080/YgoService/hall/exit-room", paramsMap);
+            string response = HttpClient.sendGet(App.serverPath + "YgoService/hall/exit-room", paramsMap);
             ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
             if (responseResult.code == 0)
             {
@@ -40,7 +40,7 @@ public class Room : MonoBehaviour {
             Dictionary<string, object> paramsMap = new Dictionary<string, object>();
             paramsMap.Add("roomIdx", roomIdx);
             paramsMap.Add("token", UserInfo.token);
-            string response = HttpClient.sendGet("http://localhost:8080/YgoService/hall/join-room", paramsMap);
+            string response = HttpClient.sendGet(App.serverPath + "YgoService/hall/join-room", paramsMap);
             ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
             if (responseResult.code == 0)
             {
