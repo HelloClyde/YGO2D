@@ -141,7 +141,14 @@ public class MainGame : MonoBehaviour {
         cardObject.GetComponent<ShowCardInfo>().cardId = cardId;
         cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
         cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
-        cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
+        if (monsterStatus == 0)
+        {
+            cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardBack");
+        }
+        else
+        {
+            cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
+        }
         GameObject monsterContent = GameObject.Find(monsterContentPath + monsterCardIdx.ToString());
         PutCard(monsterContent, cardObject, monsterStatus);
     }
