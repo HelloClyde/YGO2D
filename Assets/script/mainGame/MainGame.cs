@@ -96,13 +96,31 @@ public class MainGame : MonoBehaviour {
             int handCardIdx = int.Parse((string)responseResult["data"]["paramsMap"]["HandCardIdx"]);
             int monsterStatus = int.Parse((string)responseResult["data"]["paramsMap"]["MonsterStatus"]);
             int cardId = int.Parse((string)responseResult["data"]["paramsMap"]["CardId"]);
+            int monsterCardIdx = int.Parse((string)responseResult["data"]["paramsMap"]["MonsterCardIdx"]);
             // 删除那张手牌
             GameObject MHandContentObj = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
             GameObject desHandCardObj = MHandContentObj.transform.GetChild(handCardIdx).gameObject;
             Destroy(desHandCardObj);
             // 场上生成怪兽
-
-
+            GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
+            GameObject cardObject = Instantiate(cardPrefab);
+            cardObject.name = "card" + cardId.ToString();
+            cardObject.GetComponent<ShowCardInfo>().cardId = cardId;
+            cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
+            cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
+            cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
+            GameObject monsterContent = GameObject.Find("MyPanel/DuelDeck/Monster/Monster" + monsterCardIdx.ToString());
+            cardObject.transform.SetParent(monsterContent.transform);
+            // 设置卡牌显示状态
+            Debug.Log(monsterContent.GetComponent<RectTransform>().rect.width + ","
+                + monsterContent.GetComponent<RectTransform>().rect.height);
+            cardObject.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
+            cardObject.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
+            cardObject.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+            cardObject.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,
+                monsterContent.GetComponent<RectTransform>().rect.width);
+            cardObject.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,
+                monsterContent.GetComponent<RectTransform>().rect.width / 230 * 160);
         }
         else
         {
