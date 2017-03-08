@@ -17,6 +17,14 @@ public class MainGame : MonoBehaviour {
         this.menuPanelObj = GameObject.Find("MenuPanel");
         // 隐藏menuPanelObj
         this.menuPanelObj.SetActive(false);
+        // 生成双方牌组
+        GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
+        GameObject myCardObj = Instantiate(cardPrefab);
+        GameObject enemyCardObj = Instantiate(cardPrefab);
+        GameObject myDeckObj = GameObject.Find("MyPanel/FeatureDeck1/MainDeck");
+        GameObject enemyDeckObj = GameObject.Find("EnemyPanel/FeatureDeck1/MainDeck");
+        PutCard(myDeckObj, myCardObj);
+        PutCard(enemyDeckObj, enemyCardObj);
     }
 
     // Update is called once per frame
@@ -27,6 +35,22 @@ public class MainGame : MonoBehaviour {
         {
             GetServiceGameLog();
             this.oldTick = DateTime.Now.Ticks;
+        }
+    }
+
+    void PutCard(GameObject contentObj, GameObject cardObj, int mode = 0)
+    {
+        cardObj.transform.SetParent(contentObj.transform);
+        cardObj.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
+        cardObj.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
+        cardObj.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+        cardObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,
+            contentObj.GetComponent<RectTransform>().rect.width);
+        cardObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,
+            contentObj.GetComponent<RectTransform>().rect.width / 230 * 160);
+        if (mode == 1)
+        {
+            cardObj.GetComponent<RectTransform>().Rotate(new Vector3(0,0,90));
         }
     }
     
@@ -110,17 +134,7 @@ public class MainGame : MonoBehaviour {
             cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");
             cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
             GameObject monsterContent = GameObject.Find("MyPanel/DuelDeck/Monster/Monster" + monsterCardIdx.ToString());
-            cardObject.transform.SetParent(monsterContent.transform);
-            // 设置卡牌显示状态
-            Debug.Log(monsterContent.GetComponent<RectTransform>().rect.width + ","
-                + monsterContent.GetComponent<RectTransform>().rect.height);
-            cardObject.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
-            cardObject.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
-            cardObject.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
-            cardObject.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,
-                monsterContent.GetComponent<RectTransform>().rect.width);
-            cardObject.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,
-                monsterContent.GetComponent<RectTransform>().rect.width / 230 * 160);
+            PutCard(monsterContent, cardObject);
         }
         else
         {
