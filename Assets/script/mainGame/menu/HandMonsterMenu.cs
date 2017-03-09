@@ -28,7 +28,7 @@ class HandMonsterMenu : MenuAction
             // 两个祭品召唤
             Debug.Log("两个祭品召唤");
         }
-        
+        closeMyself();
     }
 
     public void PutMonster()
@@ -67,7 +67,6 @@ class HandMonsterMenu : MenuAction
         {
             GUIOp.showMsg((string)responseResult["data"]);
         }
-        closeMyself();
     }
 }
 
