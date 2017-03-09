@@ -38,9 +38,9 @@ public class MenuAction : MonoBehaviour {
     {
         Dictionary<string, object> paramsMap = new Dictionary<string, object>();
         paramsMap.Add("token", UserInfo.token);
-        paramsMap.Add("action", "CallMonsterFromHand");
+        paramsMap.Add("action", "CallNormalMonster");
         paramsMap.Add("HandCardIdx", this.operateCardObj.transform.GetSiblingIndex().ToString());
-        paramsMap.Add("MonsterStatus", monsterStatus.ToString());
+        paramsMap.Add("Status", monsterStatus.ToString());
         string response = HttpClient.sendPost(App.serverPath + "YgoService/duel-controller/action",
             paramsMap);
         JsonData responseResult = JsonMapper.ToObject(response);
