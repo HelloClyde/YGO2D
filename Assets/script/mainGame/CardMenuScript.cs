@@ -4,7 +4,8 @@ using UnityEngine.UI;
 using Assets.script.utils;
 
 public class CardMenuScript : MonoBehaviour {
-
+    public GameObject menuPrefab;
+    
 	// Use this for initialization
 	void Start () {
 	
@@ -16,17 +17,19 @@ public class CardMenuScript : MonoBehaviour {
         {
             if (GUIOp.isInGUI(Input.mousePosition, this.gameObject))
             {
-                Debug.Log(this.gameObject.name);
-                // 移动菜单到卡牌边
-                GameObject menuPanelObj = GameObject.Find("Canvas").GetComponent<MainGame>().menuPanelObj;
-                menuPanelObj.SetActive(true);
+                // 生成菜单
+                GameObject menuPanelObj = Instantiate(this.menuPrefab);
+                // 菜单挂到canvas下
+                menuPanelObj.transform.SetParent(GameObject.Find("Canvas").transform);
                 // 设置菜单大小
-                float menuWidth = GameObject.Find("CardPanel/EnemyPanel/FeatureDeck1/MainDeck/Deck").GetComponent<RectTransform>().rect.width;
-                // menuPanelObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors()
+                menuPanelObj.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f,0.5f);
+                menuPanelObj.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
+                float menuWidth = GameObject.Find("MHandPanel/Scroll View/Viewport/Content").GetComponent<GridLayoutGroup>().cellSize.x;
                 menuPanelObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, menuWidth);
                 menuPanelObj.GetComponent<GridLayoutGroup>().cellSize = new Vector2(menuWidth, menuWidth / 160 * 50);
+                // 设置菜单位置
                 menuPanelObj.transform.position = new Vector3(
-                    this.gameObject.transform.position.x + this.gameObject.GetComponent<RectTransform>().rect.width,
+                    this.gameObject.transform.position.x,
                     this.gameObject.transform.position.y + this.gameObject.GetComponent<RectTransform>().rect.height);
                 // 设置菜单需要操作的目标卡片
                 menuPanelObj.GetComponent<MenuAction>().operateCardObj = this.gameObject;

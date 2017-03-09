@@ -10,14 +10,10 @@ using Assets.script.utils;
 public class MainGame : MonoBehaviour {
     private long oldTick;
     private static long tickDelta = (long)(0.5 * 10000000);// 单位是100毫微秒，即2s更新一次
-    public GameObject menuPanelObj;
 
     // Use this for initialization
     void Start () {
         this.oldTick = DateTime.Now.Ticks;
-        this.menuPanelObj = GameObject.Find("MenuPanel");
-        // 隐藏menuPanelObj
-        this.menuPanelObj.SetActive(false);
         // 生成双方牌组
         putCard(GameObject.Find("MyPanel/FeatureDeck1/MainDeck"), createCard(-1,false));
         putCard(GameObject.Find("EnemyPanel/FeatureDeck1/MainDeck"), createCard(-1,false));
@@ -297,7 +293,7 @@ public class MainGame : MonoBehaviour {
         }
         else
         {
-            handContentObj = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
+            handContentObj = GameObject.Find("EHandPanel/Scroll View/Viewport/Content");
         }
         // 删除手牌
         GameObject desCardObj = handContentObj.transform.GetChild(cardIdx).gameObject;
@@ -315,6 +311,20 @@ public class MainGame : MonoBehaviour {
         {
             desCardObj = createCard(cardId,true);
             desCardObj.AddComponent<CardMenuScript>();
+            // 这里要做区分，判断是否是怪兽
+            // 获取卡片信息
+            CardInfo cardInfo = ShowCardInfo.getCardInfo(cardId);
+            if (cardInfo.type.Contains("怪兽"))
+            {
+                desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/HandMonsterMenu");
+            }else if (cardInfo.type.Contains("魔法"))
+            {
+                desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/HandMagicMenu");
+            }
+            else if (cardInfo.type.Contains("陷阱"))
+            {
+                desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/HandTrapMenu");
+            }
             handContentObj = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
         }
         else

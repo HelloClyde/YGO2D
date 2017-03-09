@@ -32,12 +32,8 @@ public class ShowCardInfo : MonoBehaviour {
             text = "暂无信息";
         }else
         {
-            Dictionary<string, object> paramsMap = new Dictionary<string, object>();
-            paramsMap.Add("cardId", this.cardId);
-            string response = HttpClient.sendGet(App.serverPath + "YgoService/card-manager/card-info", paramsMap);
-            ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
             imagePath = "image/CardImage/" + cardId.ToString();
-            text = responseResult.data.ToString();
+            text = getCardInfo(this.cardId).ToString();
         }
         // 设置图片
         this.cardInfoImageObj.GetComponent<Image>().sprite = Resources.Load<Sprite>(imagePath);
@@ -57,12 +53,21 @@ public class ShowCardInfo : MonoBehaviour {
         public CardInfo data;
 
     }
+
+    static public CardInfo getCardInfo(int cardId)
+    {
+        Dictionary<string, object> paramsMap = new Dictionary<string, object>();
+        paramsMap.Add("cardId", cardId);
+        string response = HttpClient.sendGet(App.serverPath + "YgoService/card-manager/card-info", paramsMap);
+        ResponseResult responseResult = JsonUtility.FromJson<ResponseResult>(response);
+        return responseResult.data;
+    }
 }
 
 
 
 [Serializable]
-class CardInfo
+public class CardInfo
 {
     public int id;
     public string name;
