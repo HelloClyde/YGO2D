@@ -147,7 +147,6 @@ public class MainGame : MonoBehaviour {
         GameObject contentObj;
         if (email == UserInfo.email)
         {
-            cardObj = createCard(cardId, true);
             if (status == 0)
             {
                 cardObj = createCard(cardId, false);
@@ -251,7 +250,6 @@ public class MainGame : MonoBehaviour {
         GameObject contentObj;
         if (email == UserInfo.email)
         {
-            cardObj = createCard(cardId, true);
             if (status == 0)
             {
                 cardObj = createCard(cardId, false);
@@ -259,6 +257,8 @@ public class MainGame : MonoBehaviour {
             {
                 cardObj = createCard(cardId, true);
             }
+            cardObj.AddComponent<CardMenuScript>();
+            cardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/MonsterStatusMenu");
             contentObj = GameObject.Find("MyPanel/DuelDeck/Monster/Monster" + cardIdx.ToString());
         }
         else
@@ -272,10 +272,11 @@ public class MainGame : MonoBehaviour {
             }
             contentObj = GameObject.Find("EnemyPanel/DuelDeck/Monster/Monster" + cardIdx.ToString());
         }
-        if (status == 0)
+        if (status == 0 || status == 1)
         {
             putCard(contentObj, cardObj, 1);
-        }else
+        }
+        else
         {
             putCard(contentObj, cardObj);
         }
