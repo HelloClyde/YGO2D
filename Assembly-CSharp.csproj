@@ -62,6 +62,7 @@
      <Compile Include="Assets\script\mainGame\menu\HandMonsterMenu.cs" />
      <Compile Include="Assets\script\mainGame\menu\MenuAction.cs" />
      <Compile Include="Assets\script\mainGame\menu\MonsterStatusMenu.cs" />
+     <Compile Include="Assets\script\mainGame\select\selectMonster.cs" />
      <Compile Include="Assets\script\menu\Login.cs" />
      <Compile Include="Assets\script\menu\MainMenuUIBehaviourScript.cs" />
      <Compile Include="Assets\script\utils\GUIOp.cs" />

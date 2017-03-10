@@ -130,16 +130,19 @@ public class MainGame : MonoBehaviour {
     private void DoGotoEP()
     {
         OperateTurnState("EP");
+        selectMonster.clearSelectCursor();
     }
 
     private void DoGotoM2P()
     {
         OperateTurnState("M2P");
+        selectMonster.clearSelectCursor();
     }
 
     private void DoGotoBP()
     {
         OperateTurnState("BP");
+        App.selectLimit = 2;
     }
 
     private void DoGotoM1P()
@@ -203,10 +206,11 @@ public class MainGame : MonoBehaviour {
         GameObject hpObj;
         if (email == UserInfo.email)
         {
-            hpObj = GameObject.Find("EnemyHP");
-        }else
-        {
             hpObj = GameObject.Find("MyHP");
+        }
+        else
+        {
+            hpObj = GameObject.Find("EnemyHP");
         }
         // 获取原来的hp
         int oldHP = int.Parse(hpObj.GetComponent<Text>().text.Substring(3));
@@ -357,6 +361,7 @@ public class MainGame : MonoBehaviour {
             cardObj.AddComponent<CardMenuScript>();
             cardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/MonsterStatusMenu");
             cardObj.GetComponent<CardMenuScript>().turnStates = new string[] { "M1P","M2P" };
+            cardObj.AddComponent<selectMonster>();
             contentObj = GameObject.Find("MyPanel/DuelDeck/Monster/Monster" + cardIdx.ToString());
         }
         else
@@ -368,6 +373,7 @@ public class MainGame : MonoBehaviour {
             {
                 cardObj = createCard(cardId, true);
             }
+            cardObj.AddComponent<selectMonster>();
             contentObj = GameObject.Find("EnemyPanel/DuelDeck/Monster/Monster" + cardIdx.ToString());
         }
         if (status == 0 || status == 1)

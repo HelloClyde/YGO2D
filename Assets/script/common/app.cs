@@ -10,5 +10,7 @@ namespace Assets.script.common
         public static string serverPath = "http://localhost:8080/";
         public static string TurnState;
         public static string operateEmail;
+        public static List<string> selectList = new List<string>();
+        public static int selectLimit;
     }
 }
