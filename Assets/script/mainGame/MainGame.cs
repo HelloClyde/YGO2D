@@ -89,6 +89,27 @@ public class MainGame : MonoBehaviour {
                     case "HPChange":
                         DoHPChange(responseResult);
                         break;
+                    case "GotoDP":
+                        DoGotoDP();
+                        break;
+                    case "GotoSP":
+                        DoGotoSP();
+                        break;
+                    case "GotoM1P":
+                        DoGotoM1P();
+                        break;
+                    case "GotoBP":
+                        DoGotoBP();
+                        break;
+                    case "GotoM2P":
+                        DoGotoM2P();
+                        break;
+                    case "GotoEP":
+                        DoGotoEP();
+                        break;
+                    case "TurnOperator":
+                        DoTurnOperator(responseResult);
+                        break;
                 }
             }
         }
@@ -96,6 +117,82 @@ public class MainGame : MonoBehaviour {
         {
             GUIOp.showMsg((string)responseResult["data"]);
         }
+    }
+
+    private void DoTurnOperator(JsonData responseResult)
+    {
+        // 获取参数
+        string email = (string)responseResult["data"]["email"];
+        // 设置
+        App.operateEmail = email;
+    }
+
+    private void DoGotoEP()
+    {
+        OperateTurnState("EP");
+    }
+
+    private void DoGotoM2P()
+    {
+        OperateTurnState("M2P");
+    }
+
+    private void DoGotoBP()
+    {
+        OperateTurnState("BP");
+    }
+
+    private void DoGotoM1P()
+    {
+        OperateTurnState("M1P");
+    }
+
+    private void DoGotoSP()
+    {
+        OperateTurnState("SP");
+    }
+
+    private void DoGotoDP()
+    {
+        OperateTurnState("DP");
+    }
+
+    private void OperateTurnState(string turnState)
+    {
+        string[] allTurnState = { "DP", "SP", "M1P", "BP", "M2P", "EP" };
+        // 设置标记
+        App.TurnState = turnState;
+        // 初始化全部控制器颜色
+        for (int i = 0; i < allTurnState.Length; i++)
+        {
+            if (!allTurnState[i].Equals(turnState))
+            {
+                if (App.operateEmail != UserInfo.email)
+                {
+                    // 敌方回合红色
+                    setButtonColor(GameObject.Find(allTurnState[i] + "Button"), new Color(255, 0, 0));
+                }
+                else
+                {
+                    // 我方回合白色
+                    setButtonColor(GameObject.Find(allTurnState[i] + "Button"), new Color(255, 255, 255));
+                }
+            }
+            else
+            {
+                // 设置目标控制器颜色
+                setButtonColor(GameObject.Find(allTurnState[i] + "Button"), new Color(0, 255, 0));
+            }
+        }
+    }
+
+    private void setButtonColor(GameObject buttonObj, Color normalColor)
+    {
+        ColorBlock colorBlock = buttonObj.GetComponent<Button>().colors;
+        colorBlock.normalColor = new Color(normalColor.r * 0.8f, normalColor.g * 0.8f, normalColor.b * 0.8f);
+        colorBlock.highlightedColor = new Color(normalColor.r, normalColor.g, normalColor.b);
+        colorBlock.pressedColor = new Color(normalColor.r * 0.5f, normalColor.g * 0.5f, normalColor.b * 0.5f);
+        buttonObj.GetComponent<Button>().colors = colorBlock;
     }
 
     private void DoHPChange(JsonData responseResult)
@@ -259,6 +356,7 @@ public class MainGame : MonoBehaviour {
             }
             cardObj.AddComponent<CardMenuScript>();
             cardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/MonsterStatusMenu");
+            cardObj.GetComponent<CardMenuScript>().turnStates = new string[] { "M1P","M2P" };
             contentObj = GameObject.Find("MyPanel/DuelDeck/Monster/Monster" + cardIdx.ToString());
         }
         else
@@ -326,6 +424,7 @@ public class MainGame : MonoBehaviour {
             {
                 desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/HandTrapMenu");
             }
+            desCardObj.GetComponent<CardMenuScript>().turnStates = new string[] { "M1P", "M2P" };
             handContentObj = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
         }
         else

@@ -2,9 +2,12 @@
 using System.Collections;
 using UnityEngine.UI;
 using Assets.script.utils;
+using Assets.script.common;
+using LitJson;
 
 public class CardMenuScript : MonoBehaviour {
     public GameObject menuPrefab;
+    public string[] turnStates;
     
 	// Use this for initialization
 	void Start () {
@@ -13,7 +16,8 @@ public class CardMenuScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && App.operateEmail.Equals(UserInfo.email) &&
+            isInArray(this.turnStates, App.TurnState)) 
         {
             if (GUIOp.isInGUI(Input.mousePosition, this.gameObject))
             {
@@ -35,6 +39,18 @@ public class CardMenuScript : MonoBehaviour {
                 menuPanelObj.GetComponent<MenuAction>().operateCardObj = this.gameObject;
             }
         }
+    }
+
+    private bool isInArray(string[] array,string str)
+    {
+        for (int i = 0;i < array.Length;i++)
+        {
+            if (array[i].Equals(str))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

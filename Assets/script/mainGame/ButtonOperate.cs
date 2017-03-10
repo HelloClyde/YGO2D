@@ -18,60 +18,56 @@ public class ButtonOperate : MonoBehaviour {
 	
 	}
 
+    private void NoParamsActionRequest(string action)
+    {
+        Dictionary<string, object> paramsMap = new Dictionary<string, object>();
+        paramsMap.Add("token", UserInfo.token);
+        paramsMap.Add("action", action);
+        string response = HttpClient.sendPost(App.serverPath + "YgoService/duel-controller/action",
+            paramsMap);
+        JsonData responseResult = JsonMapper.ToObject(response);
+        if ((int)responseResult["code"] != 0)
+        {
+            GUIOp.showMsg((string)responseResult["data"]);
+        }
+    }
+
     public void LoseAndExit()
     {
         // 发送退出房间请求
-        Dictionary<string, object> paramsMap = new Dictionary<string, object>();
-        paramsMap.Add("token", UserInfo.token);
-        string response = HttpClient.sendGet(App.serverPath + "YgoService/hall/join-room",
-            paramsMap);
-        JsonData jsonData = JsonMapper.ToObject(response);
-        if ((int)jsonData["code"] != 0)
-        {
-            GUIOp.showMsg((string)jsonData["data"]);
-        }
+        NoParamsActionRequest("GiveUp");
+        // TODO 之后将通过结果界面退出
         SceneManager.LoadScene("Menu");
     }
 
     public void GoToBP()
     {
-        Dictionary<string, object> paramsMap = new Dictionary<string, object>();
-        paramsMap.Add("token", UserInfo.token);
-        paramsMap.Add("action", "GoBP");
-        string response = HttpClient.sendPost(App.serverPath + "YgoService/duel-controller/action",
-            paramsMap);
-        JsonData jsonData = JsonMapper.ToObject(response);
-        if ((int)jsonData["code"] != 0)
+        if (App.operateEmail == UserInfo.email && App.TurnState.Equals("M1P"))
         {
-            GUIOp.showMsg((string)jsonData["data"]);
+            NoParamsActionRequest("GotoBP");
         }
     }
 
     public void GoToM2P()
     {
-        Dictionary<string, object> paramsMap = new Dictionary<string, object>();
-        paramsMap.Add("token", UserInfo.token);
-        paramsMap.Add("action", "GoM2P");
-        string response = HttpClient.sendPost(App.serverPath + "YgoService/duel-controller/action",
-            paramsMap);
-        JsonData jsonData = JsonMapper.ToObject(response);
-        if ((int)jsonData["code"] != 0)
+        if (App.operateEmail == UserInfo.email &&
+            (App.TurnState.Equals("M1P") || App.TurnState.Equals("BP")))
         {
-            GUIOp.showMsg((string)jsonData["data"]);
+            NoParamsActionRequest("GotoM2P");
         }
     }
 
     public void GoToEP()
     {
-        Dictionary<string, object> paramsMap = new Dictionary<string, object>();
-        paramsMap.Add("token", UserInfo.token);
-        paramsMap.Add("action", "GoEP");
-        string response = HttpClient.sendPost(App.serverPath + "YgoService/duel-controller/action",
-            paramsMap);
-        JsonData jsonData = JsonMapper.ToObject(response);
-        if ((int)jsonData["code"] != 0)
+        if (App.operateEmail == UserInfo.email)
         {
-            GUIOp.showMsg((string)jsonData["data"]);
+            NoParamsActionRequest("GotoEP");
+            TurnOperate();
         }
+    }
+
+    public void TurnOperate()
+    {
+        NoParamsActionRequest("TurnOperator");
     }
 }

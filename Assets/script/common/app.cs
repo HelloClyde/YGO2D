@@ -8,5 +8,7 @@ namespace Assets.script.common
     class App
     {
         public static string serverPath = "http://localhost:8080/";
+        public static string TurnState;
+        public static string operateEmail;
     }
 }
