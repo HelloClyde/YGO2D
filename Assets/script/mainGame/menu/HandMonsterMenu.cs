@@ -22,10 +22,18 @@ class HandMonsterMenu : MenuAction
         else if (cardInfo.starNum > 4 && cardInfo.starNum <= 6)
         {
             // 一个祭品召唤
+            App.isOfferState = true;
+            App.selectLimit = 1;
+            App.handIdx = this.operateCardObj.transform.GetSiblingIndex();
+            App.monsterStatus = 2;
             Debug.Log("一个祭品召唤");
         }else 
         {
             // 两个祭品召唤
+            App.isOfferState = true;
+            App.selectLimit = 2;
+            App.handIdx = this.operateCardObj.transform.GetSiblingIndex();
+            App.monsterStatus = 2;
             Debug.Log("两个祭品召唤");
         }
         closeMyself();
@@ -43,11 +51,19 @@ class HandMonsterMenu : MenuAction
         else if (cardInfo.starNum > 4 && cardInfo.starNum <= 6)
         {
             // 一个祭品召唤
+            App.isOfferState = true;
+            App.selectLimit = 1;
+            App.handIdx = this.operateCardObj.transform.GetSiblingIndex();
+            App.monsterStatus = 0;
             Debug.Log("一个祭品召唤");
         }
         else
         {
             // 两个祭品召唤
+            App.isOfferState = true;
+            App.selectLimit = 2;
+            App.handIdx = this.operateCardObj.transform.GetSiblingIndex();
+            App.monsterStatus = 0;
             Debug.Log("两个祭品召唤");
         }
         closeMyself();

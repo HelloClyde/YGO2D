@@ -17,7 +17,7 @@ public class CardMenuScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (Input.GetMouseButtonDown(1) && App.operateEmail.Equals(UserInfo.email) &&
-            isInArray(this.turnStates, App.TurnState)) 
+            isInArray(this.turnStates, App.TurnState) && !App.isOfferState) 
         {
             if (GUIOp.isInGUI(Input.mousePosition, this.gameObject))
             {

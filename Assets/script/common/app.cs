@@ -12,5 +12,8 @@ namespace Assets.script.common
         public static string operateEmail;
         public static List<string> selectList = new List<string>();
         public static int selectLimit;
+        public static bool isOfferState = false;
+        public static int handIdx;
+        public static int monsterStatus;
     }
 }

@@ -362,6 +362,7 @@ public class MainGame : MonoBehaviour {
             cardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/MonsterStatusMenu");
             cardObj.GetComponent<CardMenuScript>().turnStates = new string[] { "M1P","M2P" };
             cardObj.AddComponent<selectMonster>();
+            cardObj.AddComponent<selectOfferMonster>();
             contentObj = GameObject.Find("MyPanel/DuelDeck/Monster/Monster" + cardIdx.ToString());
         }
         else
