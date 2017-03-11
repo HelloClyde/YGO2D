@@ -21,22 +21,46 @@ class HandMonsterMenu : MenuAction
         }
         else if (cardInfo.starNum > 4 && cardInfo.starNum <= 6)
         {
-            // 一个祭品召唤
-            App.isOfferState = true;
-            App.selectLimit = 1;
-            App.handIdx = this.operateCardObj.transform.GetSiblingIndex();
-            App.monsterStatus = 2;
-            Debug.Log("一个祭品召唤");
+            if (existMyMonster())
+            {
+                // 一个祭品召唤
+                App.isOfferState = true;
+                App.selectLimit = 1;
+                App.handIdx = this.operateCardObj.transform.GetSiblingIndex();
+                App.monsterStatus = 2;
+            }else
+            {
+                GUIOp.showMsg("场上没有祭品");
+            }
         }else 
         {
-            // 两个祭品召唤
-            App.isOfferState = true;
-            App.selectLimit = 2;
-            App.handIdx = this.operateCardObj.transform.GetSiblingIndex();
-            App.monsterStatus = 2;
-            Debug.Log("两个祭品召唤");
+            if (existMyMonster())
+            {
+                // 两个祭品召唤
+                App.isOfferState = true;
+                App.selectLimit = 2;
+                App.handIdx = this.operateCardObj.transform.GetSiblingIndex();
+                App.monsterStatus = 2;
+            }
+            else
+            {
+                GUIOp.showMsg("场上没有祭品");
+            }
         }
         closeMyself();
+    }
+
+    private bool existMyMonster()
+    {
+        GameObject myMonsterPanel = GameObject.Find("MyPanel/DuelDeck/Monster");
+        for (int i = 0;i < myMonsterPanel.transform.childCount;i++)
+        {
+            if (myMonsterPanel.transform.GetChild(i).childCount != 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void PutMonster()
