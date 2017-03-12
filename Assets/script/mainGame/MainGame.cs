@@ -359,7 +359,7 @@ public class MainGame : MonoBehaviour {
                 cardObj = createCard(cardId, true);
             }
             cardObj.AddComponent<CardMenuScript>();
-            cardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/MonsterStatusMenu");
+            cardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("prefab/MonsterStatusMenu");
             cardObj.GetComponent<CardMenuScript>().turnStates = new string[] { "M1P","M2P" };
             cardObj.AddComponent<selectMonster>();
             cardObj.AddComponent<selectOfferMonster>();
@@ -422,14 +422,14 @@ public class MainGame : MonoBehaviour {
             CardInfo cardInfo = ShowCardInfo.getCardInfo(cardId);
             if (cardInfo.type.Contains("怪兽"))
             {
-                desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/HandMonsterMenu");
+                desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("prefab/HandMonsterMenu");
             }else if (cardInfo.type.Contains("魔法"))
             {
-                desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/HandMagicMenu");
+                desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("prefab/HandMagicMenu");
             }
             else if (cardInfo.type.Contains("陷阱"))
             {
-                desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("fab/HandTrapMenu");
+                desCardObj.GetComponent<CardMenuScript>().menuPrefab = Resources.Load<GameObject>("prefab/HandTrapMenu");
             }
             desCardObj.GetComponent<CardMenuScript>().turnStates = new string[] { "M1P", "M2P" };
             handContentObj = GameObject.Find("MHandPanel/Scroll View/Viewport/Content");
@@ -444,7 +444,7 @@ public class MainGame : MonoBehaviour {
 
     private GameObject createCard(int cardId,bool isShow)
     {
-        GameObject cardPrefab = (GameObject)Resources.Load("fab/CardPrefab");
+        GameObject cardPrefab = (GameObject)Resources.Load("prefab/CardPrefab");
         GameObject cardObject = Instantiate(cardPrefab);
         cardObject.GetComponent<ShowCardInfo>().cardInfoImageObj = GameObject.Find("InfoPanel/CardInfoPanel/CardImage");
         cardObject.GetComponent<ShowCardInfo>().cardInfoTextObj = GameObject.Find("InfoPanel/CardInfoPanel/Scroll View/Viewport/Content/Text");

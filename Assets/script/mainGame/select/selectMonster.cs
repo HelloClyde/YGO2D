@@ -64,7 +64,7 @@ class selectMonster: MonoBehaviour
     private void showSelectCursor()
     {
         // 添加图标
-        GameObject selectCursorObj = Instantiate(Resources.Load<GameObject>("fab/SelectCursor"));
+        GameObject selectCursorObj = Instantiate(Resources.Load<GameObject>("prefab/SelectCursor"));
         // 挂在TempPanel下
         GameObject tempPanelObj = GameObject.Find("TempPanel");
         selectCursorObj.transform.SetParent(tempPanelObj.transform);

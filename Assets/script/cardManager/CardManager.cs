@@ -11,7 +11,7 @@ public class CardManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        GameObject cardPrefab = Resources.Load<GameObject>("fab/CardPrefab");
+        GameObject cardPrefab = Resources.Load<GameObject>("prefab/CardPrefab");
         GameObject scrollViewObj = GameObject.Find("Canvas/CardsPanel/Scroll View");
         GameObject scrollViewContent = GameObject.Find("Canvas/CardsPanel/Scroll View/Viewport/Content");
         for (int i = 0;i < CardManager.cardTotal;i++)
@@ -43,7 +43,7 @@ public class CardManager : MonoBehaviour {
 
     public void returnMenu()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("MainMenu");
     }
    
 }

@@ -13,7 +13,7 @@ public class HallScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         // 加载预设体
-        GameObject roomPrefab = (GameObject)Resources.Load("fab/RoomPrefab");
+        GameObject roomPrefab = (GameObject)Resources.Load("prefab/RoomPrefab");
         GameObject scrollViewObj = GameObject.Find("Canvas/RoomsPanel/Scroll View");
         GameObject scrollViewContent = GameObject.Find("Canvas/RoomsPanel/Scroll View/Viewport/Content");
         // 从服务器获取初始化房间数据
