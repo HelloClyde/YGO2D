@@ -36,7 +36,7 @@ public class LoginAction : MonoBehaviour {
         }
         else
         {
-            GUIOp.showMsg((string)jsonData["data"]);
+            MsgBox.showMsg((string)jsonData["data"]);
         }
     }
 
@@ -47,6 +47,6 @@ public class LoginAction : MonoBehaviour {
 
     public void register()
     {
-        GUIOp.showMsg("注册仍未开放");
+        MsgBox.showMsg("注册仍未开放");
     }
 }

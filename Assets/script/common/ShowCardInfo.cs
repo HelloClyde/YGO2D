@@ -4,22 +4,43 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 using Assets.script.common;
+using Assets.script.utils;
 
 public class ShowCardInfo : MonoBehaviour {
     public GameObject cardInfoImageObj;
     public GameObject cardInfoTextObj;
     public int cardId = -1;
+    // 使用延迟
+    private long duration;// -1表示上一次在该部件外
+    public long durationLimit = (long)(0.2 * 10000000); // 1s延迟就触发
 
 
     // Use this for initialization
     void Start () {
-	
-	}
+        this.duration = -1;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+        if (GUIOp.isInGUI(Input.mousePosition, this.gameObject))
+        {
+            if (this.duration == -1)
+            {
+                this.duration = DateTime.Now.Ticks;
+            }
+            else
+            {
+                if (DateTime.Now.Ticks > this.duration + this.durationLimit)
+                {
+                    showCardInfo();
+                }
+            }
+        }
+        else
+        {
+            this.duration = -1;
+        }
+    }
 
     public void showCardInfo()
     {

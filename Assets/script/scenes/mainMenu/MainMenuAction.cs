@@ -33,7 +33,7 @@ public class MainMenuAction : MonoBehaviour {
 
     public void duelInfoAction()
     {
-        GUIOp.showMsg("个人战绩暂时还不能查看");
+        MsgBox.showMsg("个人战绩暂时还不能查看");
     }
 
     public void exitGameAction()

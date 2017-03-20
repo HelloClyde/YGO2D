@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace Assets.script.utils
 {
@@ -19,22 +14,6 @@ namespace Assets.script.utils
                 return true;
             }
             return false;
-        }
-
-        static public void showMsg(string msg)
-        {
-            // 生成消息框
-            GameObject msgPrefab = (GameObject)Resources.Load("prefab/MsgPanel");
-            GameObject msgObj = UnityEngine.Object.Instantiate(msgPrefab);
-            msgObj.name = "MsgPanel";
-            // 加入canvas中
-            GameObject canvas = GameObject.Find("Canvas");
-            msgObj.transform.SetParent(canvas.transform);
-            msgObj.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
-            msgObj.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
-            // 修改文字
-            GameObject text = GameObject.Find("Canvas/MsgPanel/MsgBox/Msg");
-            text.GetComponent<Text>().text = msg;
         }
     }
 }

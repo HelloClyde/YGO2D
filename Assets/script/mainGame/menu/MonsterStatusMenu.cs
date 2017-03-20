@@ -37,7 +37,7 @@ class MonsterStatusMenu : MenuAction
         JsonData responseResult = JsonMapper.ToObject(response);
         if ((int)responseResult["code"] != 0)
         {
-            GUIOp.showMsg((string)responseResult["data"]);
+            MsgBox.showMsg((string)responseResult["data"]);
         }
         closeMyself();
     }

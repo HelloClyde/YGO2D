@@ -115,7 +115,7 @@ public class MainGame : MonoBehaviour {
         }
         else
         {
-            GUIOp.showMsg((string)responseResult["data"]);
+            MsgBox.showMsg((string)responseResult["data"]);
         }
     }
 

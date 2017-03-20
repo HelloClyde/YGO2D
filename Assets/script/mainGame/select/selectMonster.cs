@@ -34,7 +34,7 @@ class selectMonster: MonoBehaviour
                 {
                     if (App.selectList.Count == 0)
                     {
-                        GUIOp.showMsg("先选择我方怪兽");
+                        MsgBox.showMsg("先选择我方怪兽");
                         return;
                     }
                 }
@@ -122,7 +122,7 @@ class selectMonster: MonoBehaviour
         JsonData responseResult = JsonMapper.ToObject(response);
         if ((int)responseResult["code"] != 0)
         {
-            GUIOp.showMsg((string)responseResult["data"]);
+            MsgBox.showMsg((string)responseResult["data"]);
         }
     }
     

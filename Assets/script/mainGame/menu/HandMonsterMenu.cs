@@ -30,7 +30,7 @@ class HandMonsterMenu : MenuAction
                 App.monsterStatus = 2;
             }else
             {
-                GUIOp.showMsg("场上没有祭品");
+                MsgBox.showMsg("场上没有祭品");
             }
         }else 
         {
@@ -44,7 +44,7 @@ class HandMonsterMenu : MenuAction
             }
             else
             {
-                GUIOp.showMsg("场上没有祭品");
+                MsgBox.showMsg("场上没有祭品");
             }
         }
         closeMyself();
@@ -105,7 +105,7 @@ class HandMonsterMenu : MenuAction
         JsonData responseResult = JsonMapper.ToObject(response);
         if ((int)responseResult["code"] != 0)
         {
-            GUIOp.showMsg((string)responseResult["data"]);
+            MsgBox.showMsg((string)responseResult["data"]);
         }
     }
 }
