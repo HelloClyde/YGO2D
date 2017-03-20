@@ -32,7 +32,7 @@ public class ShowCardInfo : MonoBehaviour {
             text = "暂无信息";
         }else
         {
-            imagePath = "image/CardImage/" + cardId.ToString();
+            imagePath = "image/CardImage/" + (this.cardId - 1).ToString();
             text = getCardInfo(this.cardId).ToString();
         }
         // 设置图片

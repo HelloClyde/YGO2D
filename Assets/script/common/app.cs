@@ -7,7 +7,7 @@ namespace Assets.script.common
 {
     class App
     {
-        public static string serverPath = "http://localhost:8080/";
+        public static string serverPath = "http://127.0.0.1:8080/";
         public static string TurnState;
         public static string operateEmail;
         public static List<string> selectList = new List<string>();
