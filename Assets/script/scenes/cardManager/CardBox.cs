@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class CardBox : MonoBehaviour {
     public List<int> enableCards;
     public List<int> userCards;
-    public List<int> deckCards;
+    public Dictionary<int,int> deckCards = new Dictionary<int, int>();
     public int eachPageNum;
     public int pageTotal;
     public int pageIdx = 0;
@@ -78,7 +78,15 @@ public class CardBox : MonoBehaviour {
         {
             for (int i = 0; i < jsonData["data"]["decks"].Count; i++)
             {
-                this.deckCards.Add(int.Parse(jsonData["data"]["decks"][i].ToString()));
+                int cardId = int.Parse(jsonData["data"]["decks"][i].ToString());
+                if (this.deckCards.ContainsKey(cardId))
+                {
+                    this.deckCards[cardId]++;
+                }
+                else
+                {
+                    this.deckCards[cardId] = 1;
+                }
             }
         }
     }
@@ -177,15 +185,14 @@ public class CardBox : MonoBehaviour {
 
     private int getCardNum(int cardId)
     {
-        int n = 0;
-        for (int i = 0; i < this.deckCards.Count; i++)
+        if (this.deckCards.ContainsKey(cardId))
         {
-            if (this.deckCards[i] == cardId)
-            {
-                n++;
-            }
+            return this.deckCards[cardId];
         }
-        return n;
+        else
+        {
+            return 0;
+        }
     }
 
 }

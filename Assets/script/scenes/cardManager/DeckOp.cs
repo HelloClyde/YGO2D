@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class DeckOp : MonoBehaviour {
-    private List<int> deckCards = null;
+    private Dictionary<int, int> deckCards = null;
     public GameObject cardNumIconObj = null;
 
 	// Use this for initialization
@@ -34,7 +34,13 @@ public class DeckOp : MonoBehaviour {
         int cardId = this.gameObject.GetComponent<ShowCardInfo>().cardId;
         if (getCardNum(cardId) < 3)
         {
-            this.deckCards.Add(cardId);
+            if (this.deckCards.ContainsKey(cardId))
+            {
+                this.deckCards[cardId]++;
+            }else
+            {
+                this.deckCards[cardId] = 1;
+            }
             resetCardNum();
             Debug.Log(this.gameObject.GetComponent<ShowCardInfo>().cardId.ToString() + "add");
         }
@@ -45,7 +51,7 @@ public class DeckOp : MonoBehaviour {
         int cardId = this.gameObject.GetComponent<ShowCardInfo>().cardId;
         if (getCardNum(cardId) > 0)
         {
-            this.deckCards.Remove(cardId);
+            this.deckCards[cardId] --;
             resetCardNum();
             Debug.Log(this.gameObject.GetComponent<ShowCardInfo>().cardId.ToString() + "sub");
         }
@@ -66,14 +72,12 @@ public class DeckOp : MonoBehaviour {
 
     private int getCardNum(int cardId)
     {
-        int n = 0;
-        for (int i = 0;i < this.deckCards.Count;i++)
+        if (this.deckCards.ContainsKey(cardId))
         {
-            if (this.deckCards[i] == cardId)
-            {
-                n ++;
-            }
+            return this.deckCards[cardId];
+        }else
+        {
+            return 0;
         }
-        return n;
     }
 }
