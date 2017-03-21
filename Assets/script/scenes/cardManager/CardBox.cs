@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class CardBox : MonoBehaviour {
     public List<int> enableCards;
     public List<int> userCards;
+    public List<int> deckCards;
     public int eachPageNum;
     public int pageTotal;
     public int pageIdx = 0;
@@ -17,6 +18,7 @@ public class CardBox : MonoBehaviour {
 	void Start () {
         loadEnableCards();
         loadUserCards();
+        loadUserDeck();
         calEachPageNum();
         loadCurPageCards();
 	}
@@ -66,6 +68,21 @@ public class CardBox : MonoBehaviour {
         }
     }
 
+    private void loadUserDeck()
+    {
+        Dictionary<string, object> paramsMap = new Dictionary<string, object>();
+        paramsMap.Add("token", UserInfo.token);
+        string response = HttpClient.sendGet(App.serverPath + "YgoService/user-op/get-decks", paramsMap);
+        JsonData jsonData = JsonMapper.ToObject(response);
+        if ((int)jsonData["code"] == 0)
+        {
+            for (int i = 0; i < jsonData["data"]["decks"].Count; i++)
+            {
+                this.deckCards.Add(int.Parse(jsonData["data"]["decks"][i].ToString()));
+            }
+        }
+    }
+
     private void loadCurPageCards()
     {
         // 清空
@@ -87,6 +104,7 @@ public class CardBox : MonoBehaviour {
             {
                 tempObj.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + (this.enableCards[cardIdx] - 1).ToString());
                 tempObj.GetComponent<ShowCardInfo>().cardId = this.enableCards[cardIdx];
+                tempObj.AddComponent<DeckOp>();
             }else
             {
                 tempObj.GetComponent<ShowCardInfo>().cardId = -1;
@@ -144,4 +162,5 @@ public class CardBox : MonoBehaviour {
     {
         SceneManager.LoadScene("MainMenu");
     }
+
 }

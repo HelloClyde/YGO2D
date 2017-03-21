@@ -45,7 +45,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\script\cardManager\CardManager.cs" />
      <Compile Include="Assets\script\common\DontDestoryOnLoad.cs" />
      <Compile Include="Assets\script\common\MsgBox.cs" />
      <Compile Include="Assets\script\common\ScrollViewSize.cs" />
@@ -66,6 +65,7 @@
      <Compile Include="Assets\script\mainGame\select\selectMonster.cs" />
      <Compile Include="Assets\script\mainGame\select\selectOfferMonster .cs" />
      <Compile Include="Assets\script\scenes\cardManager\CardBox.cs" />
+     <Compile Include="Assets\script\scenes\cardManager\DeckOp.cs" />
      <Compile Include="Assets\script\scenes\mainMenu\LoginAction.cs" />
      <Compile Include="Assets\script\scenes\mainMenu\MainMenu.cs" />
      <Compile Include="Assets\script\scenes\mainMenu\MainMenuAction.cs" />

@@ -56,7 +56,7 @@ public class Room : MonoBehaviour {
 
     class ResponseResult
     {
-        public int code;
-        public int data;
+        public int code = 0;
+        public int data = 0;
     }
 }

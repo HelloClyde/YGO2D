@@ -78,8 +78,8 @@ public class HallScript : MonoBehaviour {
     [Serializable]
     class ResponseResult
     {
-        public int code;
-        public List<RoomInfo> data;
+        public int code = 0;
+        public List<RoomInfo> data = null;
 
     }
 }

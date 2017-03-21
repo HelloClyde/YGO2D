@@ -70,8 +70,8 @@ public class ShowCardInfo : MonoBehaviour {
     [Serializable]
     class ResponseResult
     {
-        public int code;
-        public CardInfo data;
+        public int code = 0;
+        public CardInfo data = null;
 
     }
 
