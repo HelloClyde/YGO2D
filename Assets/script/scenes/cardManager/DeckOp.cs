@@ -2,9 +2,11 @@
 using System.Collections;
 using Assets.script.utils;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class DeckOp : MonoBehaviour {
     private List<int> deckCards = null;
+    public GameObject cardNumIconObj = null;
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +35,7 @@ public class DeckOp : MonoBehaviour {
         if (getCardNum(cardId) < 3)
         {
             this.deckCards.Add(cardId);
+            resetCardNum();
             Debug.Log(this.gameObject.GetComponent<ShowCardInfo>().cardId.ToString() + "add");
         }
     }
@@ -43,7 +46,21 @@ public class DeckOp : MonoBehaviour {
         if (getCardNum(cardId) > 0)
         {
             this.deckCards.Remove(cardId);
+            resetCardNum();
             Debug.Log(this.gameObject.GetComponent<ShowCardInfo>().cardId.ToString() + "sub");
+        }
+    }
+
+    private void resetCardNum()
+    {
+        int cardNum = getCardNum(this.gameObject.GetComponent<ShowCardInfo>().cardId);
+        if (cardNum == 0)
+        {
+            this.cardNumIconObj.SetActive(false);
+        }else
+        {
+            this.cardNumIconObj.SetActive(true);
+            this.gameObject.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Text>().text = cardNum.ToString();
         }
     }
 

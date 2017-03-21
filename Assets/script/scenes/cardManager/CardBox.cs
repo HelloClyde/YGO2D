@@ -93,6 +93,7 @@ public class CardBox : MonoBehaviour {
         // 添加卡片
         int startIdx = this.pageIdx * this.eachPageNum;
         GameObject cardPrefab = Resources.Load<GameObject>("prefab/CardPrefab");
+        GameObject cardNumPrefab = Resources.Load<GameObject>("prefab/CardNumIcon");
         for (int cardIdx = startIdx; cardIdx < startIdx + this.eachPageNum && cardIdx < this.enableCards.Count; cardIdx++)
         {
             GameObject tempObj = Instantiate(cardPrefab);
@@ -105,7 +106,18 @@ public class CardBox : MonoBehaviour {
                 tempObj.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + (this.enableCards[cardIdx] - 1).ToString());
                 tempObj.GetComponent<ShowCardInfo>().cardId = this.enableCards[cardIdx];
                 tempObj.AddComponent<DeckOp>();
-            }else
+                // 添加卡片在卡组中的数量
+                int cardNum = getCardNum(this.enableCards[cardIdx]);
+                GameObject cardNumIcon = Instantiate(cardNumPrefab);
+                cardNumIcon.transform.SetParent(tempObj.transform);
+                cardNumIcon.transform.GetChild(0).gameObject.GetComponent<Text>().text = cardNum.ToString();
+                tempObj.GetComponent<DeckOp>().cardNumIconObj = cardNumIcon;
+                if (cardNum == 0)
+                {
+                    cardNumIcon.SetActive(false);
+                }
+            }
+            else
             {
                 tempObj.GetComponent<ShowCardInfo>().cardId = -1;
             }
@@ -161,6 +173,19 @@ public class CardBox : MonoBehaviour {
     public void returnMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private int getCardNum(int cardId)
+    {
+        int n = 0;
+        for (int i = 0; i < this.deckCards.Count; i++)
+        {
+            if (this.deckCards[i] == cardId)
+            {
+                n++;
+            }
+        }
+        return n;
     }
 
 }
