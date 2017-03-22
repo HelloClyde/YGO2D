@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Net;
 using System.IO;
+using LitJson;
+using System;
 
 public class HttpClient {
 
@@ -16,7 +18,7 @@ public class HttpClient {
         httpRequest.KeepAlive = true;
         // 通过流写入请求数据
         // 传入json化的参数
-        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(HttpClient.dictoryToJson(paramsMap));
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(JsonMapper.ToJson(paramsMap));
         httpRequest.ContentLength = bytes.Length;
         Stream requestStream = httpRequest.GetRequestStream();
         requestStream.Write(bytes, 0, bytes.Length);
@@ -60,6 +62,7 @@ public class HttpClient {
         return strResponse;
     }
 
+    [Obsolete]
     static public string dictoryToJson(Dictionary<string,object> dict)
     {
         if (dict.Count == 0)

@@ -222,7 +222,29 @@ public class CardBox : MonoBehaviour {
 
     public void returnMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        // 保存
+        List<int> deckList = new List<int>();
+        // 拍平
+        foreach (int cardId in this.deckCards.Keys)
+        {
+            for (int i = 0;i < this.deckCards[cardId]; i++)
+            {
+                deckList.Add(cardId);
+            }
+        }
+        // 上传
+        Dictionary<string, object> paramsMap = new Dictionary<string, object>();
+        paramsMap.Add("token", UserInfo.token);
+        paramsMap.Add("newDecks", deckList);
+        string response = HttpClient.sendPost(App.serverPath + "YgoService/user-op/update-decks", paramsMap);
+        JsonData jsonData = JsonMapper.ToObject(response);
+        if ((int)jsonData["code"] != 0)
+        {
+            MsgBox.showMsg((string)jsonData["data"]);
+        }else
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     private int getCardNum(int cardId)
