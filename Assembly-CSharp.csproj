@@ -66,6 +66,7 @@
      <Compile Include="Assets\script\mainGame\select\selectOfferMonster .cs" />
      <Compile Include="Assets\script\scenes\cardManager\CardBox.cs" />
      <Compile Include="Assets\script\scenes\cardManager\DeckOp.cs" />
+     <Compile Include="Assets\script\scenes\cardManager\JumpCardPage.cs" />
      <Compile Include="Assets\script\scenes\mainMenu\LoginAction.cs" />
      <Compile Include="Assets\script\scenes\mainMenu\MainMenu.cs" />
      <Compile Include="Assets\script\scenes\mainMenu\MainMenuAction.cs" />
