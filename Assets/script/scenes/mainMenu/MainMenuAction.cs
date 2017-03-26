@@ -23,7 +23,7 @@ public class MainMenuAction : MonoBehaviour {
 
     public void startGameAction()
     {
-        SceneManager.LoadScene("Hall");
+        SceneManager.LoadScene("GameHall");
     }
 
     public void cardManagerAction()
