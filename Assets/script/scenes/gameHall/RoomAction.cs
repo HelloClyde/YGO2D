@@ -69,7 +69,7 @@ public class RoomAction : MonoBehaviour {
         string userName = (string)playerData["userName"];
         int winGame = (int)playerData["winGame"];
         int allGame = (int)playerData["allGame"];
-        string winRate = allGame == 0 ? "--" : ((int)(winGame * 100 / allGame)).ToString();
+        string winRate = allGame == 0 ? "--" : ((int)(winGame * 100 / allGame)).ToString() + "%";
         return 
             "用户名：" + userName + "\n" + 
             "胜场：" + winGame + "\n" +
