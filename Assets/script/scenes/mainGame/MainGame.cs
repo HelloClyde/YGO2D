@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 using System.Collections.Generic;
 using Assets.script.common;
 using LitJson;
 using UnityEngine.UI;
-using Assets.script.utils;
+using UnityEngine.SceneManagement;
 
 public class MainGame : MonoBehaviour {
     private long oldTick;
-    private static long tickDelta = (long)(0.5 * 10000000);// 单位是100毫微秒，即2s更新一次
+    private static long tickDelta = (long)(0.2 * 10000000);// 单位是100毫微秒
 
     // Use this for initialization
     void Start () {
@@ -110,6 +109,9 @@ public class MainGame : MonoBehaviour {
                     case "TurnOperator":
                         DoTurnOperator(responseResult);
                         break;
+                    case "Win":
+                        DoResult(responseResult);
+                        break;
                 }
             }
         }
@@ -117,6 +119,21 @@ public class MainGame : MonoBehaviour {
         {
             MsgBox.showMsg((string)responseResult["data"]);
         }
+    }
+
+    private void DoResult(JsonData responseResult)
+    {
+        string email = (string)responseResult["data"]["email"];
+        if (email.Equals(UserInfo.email))
+        {
+            // win
+            App.gameResult = 0;
+        }else
+        {
+            // lose
+            App.gameResult = 1;
+        }
+        SceneManager.LoadScene("GameResult");
     }
 
     private void DoTurnOperator(JsonData responseResult)
@@ -455,7 +472,7 @@ public class MainGame : MonoBehaviour {
         }
         else
         {
-            cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + cardId.ToString());
+            cardObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("image/CardImage/" + (cardId-1).ToString());
         }
         return cardObject;
     }

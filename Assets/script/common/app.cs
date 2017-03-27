@@ -15,5 +15,6 @@ namespace Assets.script.common
         public static bool isOfferState = false;
         public static int handIdx;
         public static int monsterStatus;
+        public static int gameResult;// 0 : win , 1 : lose
     }
 }

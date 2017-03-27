@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-class selectMonster: MonoBehaviour
+class selectOfferMonster: MonoBehaviour
 {
 
     void Start()
@@ -17,48 +17,42 @@ class selectMonster: MonoBehaviour
     
     void Update()
     {
-        // 右键选中
-        if (Input.GetMouseButtonDown(1) && App.TurnState.Equals("BP"))
+        // 左键选中
+        if (Input.GetMouseButtonDown(0) && App.isOfferState)
         {
             if (GUIOp.isInGUI(Input.mousePosition, this.gameObject))
             {
-                // 判断是敌方怪兽还是我方怪兽
-                if (this.gameObject.transform.parent.parent.parent.parent.gameObject.name.Equals("MyPanel"))
+                showSelectCursor();
+                // 判断自己是否已经存在
+                if (isExistInArray(this.gameObject.transform.parent.gameObject.name))
                 {
-                    if (App.selectList.Count != 0)
-                    {
-                        clearSelectCursor();
-                        return;
-                    }
+                    clearSelectCursor();
+                    App.isOfferState = false;
+                    return;
                 }else
                 {
-                    if (App.selectList.Count == 0)
-                    {
-                        MsgBox.showMsg("先选择我方怪兽");
-                        return;
-                    }
+                    App.selectList.Add(this.gameObject.transform.parent.gameObject.name);
                 }
-                showSelectCursor();
-                App.selectList.Add(this.gameObject.transform.parent.gameObject.name);
-                Debug.Log("aaa");
-                // 判断敌方是否有怪兽
-                if (!existEnemyMonster())
+                if (App.selectList.Count == App.selectLimit)
                 {
-                    AttackMonsterAction(true);
+                    CallAction();
                     clearSelectCursor();
-                }
-                else
-                {
-                    Debug.Log("App.selectList.Count:" + App.selectList.Count);
-                    Debug.Log("App.selectLimit:" + App.selectLimit);
-                    if (App.selectList.Count == App.selectLimit)
-                    {
-                        AttackMonsterAction();
-                        clearSelectCursor();
-                    }
+                    App.isOfferState = false;
                 }
             }
         }
+    }
+
+    private bool isExistInArray(string name)
+    {
+        for (int i = 0;i < App.selectList.Count; i++)
+        {
+            if (App.selectList[i].Equals(name))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void showSelectCursor()
@@ -79,19 +73,6 @@ class selectMonster: MonoBehaviour
 
     }
 
-    private bool existEnemyMonster()
-    {
-        GameObject enemyDeck = GameObject.Find("EnemyPanel/DuelDeck/Monster");
-        for (int i = 0;i < enemyDeck.transform.childCount;i++)
-        {
-            if (enemyDeck.transform.GetChild(i).childCount != 0)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static void clearSelectCursor()
     {
         GameObject tempPanelObj = GameObject.Find("TempPanel");
@@ -103,19 +84,24 @@ class selectMonster: MonoBehaviour
         }
     }
 
-    public void AttackMonsterAction(bool isAtkPlayer = false)
+    public void CallAction()
     {
         Dictionary<string, object> paramsMap = new Dictionary<string, object>();
         paramsMap.Add("token", UserInfo.token);
-        paramsMap.Add("action", "AtkMonster");
-        paramsMap.Add("SrcMonsterIdx", App.selectList[0].Substring(App.selectList[0].Length - 1));
-        if (isAtkPlayer)
+        if (App.selectList.Count == 1)
         {
-            paramsMap.Add("DesMonsterIdx", "-1");
+            paramsMap.Add("action", "CallMiddleMonster");
+            paramsMap.Add("MonsterIdx", App.selectList[0].Substring(App.selectList[0].Length - 1));
+            paramsMap.Add("HandCardIdx", App.handIdx);
+            paramsMap.Add("Status", App.monsterStatus);
         }
-        else
+        else if (App.selectList.Count == 2)
         {
-            paramsMap.Add("DesMonsterIdx", App.selectList[1].Substring(App.selectList[1].Length - 1));
+            paramsMap.Add("action", "CallHighMonster");
+            paramsMap.Add("MonsterIdx1", App.selectList[0].Substring(App.selectList[0].Length - 1));
+            paramsMap.Add("MonsterIdx2", App.selectList[1].Substring(App.selectList[1].Length - 1));
+            paramsMap.Add("HandCardIdx", App.handIdx);
+            paramsMap.Add("Status", App.monsterStatus);
         }
         string response = HttpClient.sendPost(App.serverPath + "YgoService/duel-controller/action",
             paramsMap);

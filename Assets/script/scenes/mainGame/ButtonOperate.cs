@@ -36,8 +36,6 @@ public class ButtonOperate : MonoBehaviour {
     {
         // 发送退出房间请求
         NoParamsActionRequest("GiveUp");
-        // TODO 之后将通过结果界面退出
-        SceneManager.LoadScene("Menu");
     }
 
     public void GoToBP()
