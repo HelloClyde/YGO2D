@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using UnityEngine;
 using System.Text;
 
 namespace Assets.script.common
 {
     class App
     {
-        public static string serverPath = "http://127.0.0.1:8080/";
+        public static string serverPath = "http://localhost:8080/";
         public static string TurnState;
         public static string operateEmail;
         public static List<string> selectList = new List<string>();
@@ -16,5 +17,22 @@ namespace Assets.script.common
         public static int handIdx;
         public static int monsterStatus;
         public static int gameResult;// 0 : win , 1 : lose
+
+        static App()
+        {
+            try
+            {
+                StreamReader sr = new StreamReader("serverPath.conf", Encoding.UTF8);
+                String line;
+                if ((line = sr.ReadLine()) != null)
+                {
+                    serverPath = line;
+                }
+                sr.Close();
+            } catch(Exception e)
+            {
+                Debug.Log(e.StackTrace);
+            }
+        }
     }
 }

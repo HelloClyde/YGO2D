@@ -62,6 +62,7 @@
      <Compile Include="Assets\script\scenes\gameResult\WinCard.cs" />
      <Compile Include="Assets\script\scenes\mainGame\ButtonOperate.cs" />
      <Compile Include="Assets\script\scenes\mainGame\CardMenuScript.cs" />
+     <Compile Include="Assets\script\scenes\mainGame\HPChangeEffect.cs" />
      <Compile Include="Assets\script\scenes\mainGame\HandContentFit.cs" />
      <Compile Include="Assets\script\scenes\mainGame\MainGame.cs" />
      <Compile Include="Assets\script\scenes\mainGame\menu\HandMagicMenu.cs" />

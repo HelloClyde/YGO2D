@@ -224,10 +224,12 @@ public class MainGame : MonoBehaviour {
         if (email == UserInfo.email)
         {
             hpObj = GameObject.Find("MyHP");
+            GameObject.Find("MyHPEffect").GetComponent<HPChangeEffect>().setHp(hpValue);
         }
         else
         {
             hpObj = GameObject.Find("EnemyHP");
+            GameObject.Find("EmenyHPEffect").GetComponent<HPChangeEffect>().setHp(hpValue);
         }
         // 获取原来的hp
         int oldHP = int.Parse(hpObj.GetComponent<Text>().text.Substring(3));
