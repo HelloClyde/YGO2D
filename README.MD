@@ -3,6 +3,8 @@
 ## detail
 ```/Assets/Resources/image/CardImage``` can't upload to github because of limit of github
 
+just can only achieve a little card effect
+
 ## web server program code
 [FieldSoft-HelloClyde/YGO-online](https://github.com/FieldSoft-HelloClyde/YGO-online)
 
